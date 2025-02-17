@@ -13,11 +13,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-enum rainbowPositions {
-bottomStop,
+enum rainbowPositions { // MAKE SURE POSITIONS ARE LISTED FROM LOWEST TO HIGHEST
+bottomStop, 
 belowL1,
 L1,
 aboveL1,
@@ -105,6 +106,11 @@ public class Elevator extends SubsystemBase {
  }
 
 
+public void stop() {
+  left_motor.stopMotor();
+  right_motor.stopMotor();
+}
+
 
  public void move(double speed) {
    left_motor.set(speed);
@@ -135,9 +141,6 @@ public class Elevator extends SubsystemBase {
     move(0);
   }
  }
-
-
-
 
 
  public int getCurrentPosition(){ // converts sensor readings to position indices
@@ -185,7 +188,32 @@ public class Elevator extends SubsystemBase {
    return colorIndex;
    }
     
+
+  //***************** COMMANDS **********************************************/
+     public Command moveL1Command() {
+        return run(() -> moveToDesiredPostion(rainbowPositions.L1.ordinal()));
+    }
   
+     public Command moveL2Command() {
+      return run(() -> moveToDesiredPostion(rainbowPositions.L2.ordinal()));
+    }
+
+     public Command moveL3Command() {
+      return run(() -> moveToDesiredPostion(rainbowPositions.L3.ordinal()));
+    }
+
+     public Command moveL4Command() {
+      return run(() -> moveToDesiredPostion(rainbowPositions.L4.ordinal()));
+    }
+
+    public Command moveBargeCommand() {
+      return run(() -> moveToDesiredPostion(rainbowPositions.barge.ordinal()));
+    }
+
+    public Command stopCommand() {
+      return run(() -> stop());
+    }
+// *****************************************************************************
 
   @Override 
   public void periodic() {
