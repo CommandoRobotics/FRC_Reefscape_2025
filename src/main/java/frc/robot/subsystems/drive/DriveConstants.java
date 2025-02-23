@@ -35,13 +35,13 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.0);
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
+  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(2.76);
+  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0);
+  public static final Rotation2d backLeftZeroRotation = new Rotation2d(-.752);
+  public static final Rotation2d backRightZeroRotation = new Rotation2d(-2.485);
 
   // Device CAN IDs
-  public static final int pigeonCanId = 9;
+  public static final int pigeonCanId = 19;
 
   public static final int frontLeftDriveCanId = 2;
   public static final int backLeftDriveCanId = 6;
@@ -73,15 +73,15 @@ public class DriveConstants {
   // Drive PID configuration
   public static final double driveKp = 0.0;
   public static final double driveKd = 0.0;
-  public static final double driveKs = 0.0;
-  public static final double driveKv = 0.1;
+  public static final double driveKs = 0.15629;
+  public static final double driveKv = 0.13720;
   public static final double driveSimP = 0.05;
   public static final double driveSimD = 0.0;
   public static final double driveSimKs = 0.0;
   public static final double driveSimKv = 0.0789;
 
   // Turn motor configuration
-  public static final boolean turnInverted = false;
+  public static final boolean turnInverted = true;
   public static final int turnMotorCurrentLimit = 20;
   // Turn Motor Reduction from  Mk4i Steering Gear Ratio
   // https://www.swervedrivespecialties.com/products/mk4i-swerve-module
@@ -97,10 +97,10 @@ public class DriveConstants {
 
   // CANcoder offsets from programming bot
   // TODO: Change CANcoder offsets to values for competition bot
-  public static final double frontLeftCANCoderOffset = 95.186;
-  public static final double frontRightCANCoderOffset = 346.992;
-  public static final double backLeftCANCoderOffset = 82.354;
-  public static final double backRightCANCoderOffset = 87.527;
+  public static final double frontLeftCANCoderOffset = 162.15804;
+  public static final double frontRightCANCoderOffset = 344.00376;
+  public static final double backLeftCANCoderOffset = 208.6524;
+  public static final double backRightCANCoderOffset = 278.34948;
 
   // Turn PID configuration
   public static final double turnKp = 2.0;
