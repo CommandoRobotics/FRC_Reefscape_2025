@@ -1,0 +1,37 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        ".schema": {
+          "open": true
+        },
+        "Drive": {
+          "Module0": {
+            "open": true
+          },
+          "Module1": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      }
+    },
+    "types": {
+      "/AdvantageKit/RealOutputs/Alerts": "Alerts",
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Choices": "String Chooser"
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "5889"
+  }
+}
