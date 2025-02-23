@@ -12,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -48,7 +47,6 @@ public class Hand extends SubsystemBase {
       45; // position in degrees the hand needs to be to score at L2 // TODO tune this value
   private static final double L4PositionDegrees =
       90; // position in degrees the hand needs to be to score at L2 // TODO tune this value
-
 
   public Hand() {
     wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
@@ -180,6 +178,7 @@ public class Hand extends SubsystemBase {
     SmartDashboard.putBoolean("hand detects coral", coralInHand());
     double actualDegrees = Rotation2d.fromRotations(wristEncoder.getPosition()).getDegrees();
     SmartDashboard.putNumber("Wrist Angle (degrees)", actualDegrees);
+    setPosition(actualDegrees);
   }
 
   @Override
