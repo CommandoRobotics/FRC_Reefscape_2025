@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -120,9 +121,15 @@ private void grab() {
 
 
 
+
 // Function to reverse (yeet) grabber motor
 private void yeet() {
     grabberMotor.set(-0.5);
+}
+
+// Function to know if the hook has algae
+public boolean hasAlgae() {
+    return touchSensor.get();
 }
 
 // Command to set auto grab
@@ -144,6 +151,8 @@ public void periodic() {
     // Need to adjust the angle to account for the sensor offset for the hook
    Rotation2d adjustedTarget = targetAngle.plus(shoulderOffsetAngleInRotations);
     shoulderClosedLoopController.setReference(adjustedTarget.getRotations(), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    SmartDashboard.putNumber("Target Position (Degrees)", targetAngle.getDegrees());
+
 
     if(autoGrab) {
         // Check if button is pressed
