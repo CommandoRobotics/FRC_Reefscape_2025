@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 enum hookPositions {
@@ -26,8 +27,15 @@ enum hookPositions {
 
 public class Hook extends SubsystemBase {
     private SparkMax grabberMotor;
-    private Rotation2d targetAngle;
+    private boolean autoGrab;
+    private final int touchSensorPort = 0;
+    private DigitalInput touchSensor;
 
+
+
+
+    private Rotation2d targetAngle;
+    // TODO: Rename wrist to schoulder
     // Wrist Motor
   final int shoulderMotorCANID = 61;
   private SparkMax shoulderMotor; // Motor for rotating the hand up and down.
@@ -51,6 +59,8 @@ public class Hook extends SubsystemBase {
     //Constructor
     public Hook() {
     grabberMotor = new SparkMax(62, MotorType.kBrushless);
+    autoGrab = false;
+    touchSensor = new DigitalInput(touchSensorPort);
 
     targetAngle = Rotation2d.fromDegrees(0);
     shoulderMotor = new SparkMax(shoulderMotorCANID, MotorType.kBrushless);
@@ -99,9 +109,28 @@ public void setTargetPosition(hookPositions position) {
     }
 }
 
+// TODO: Create function to run (intake) the grabber motor
+private void grab() {
+    double grab_motor_power = 0.5; // TODO: Tune this value
+    grabberMotor.set(grab_motor_power);
+}
+
+// TODO: Create function to reverse (yeet) the grabber motor
+
+// TODO: Create a command to set auto grab
+
 @Override
 public void periodic() {
     shoulderClosedLoopController.setReference(targetAngle.getRotations(), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+
+    if (autoGrab) {
+        // Check if button is pressed
+        if (touchSensor.get()) {
+            // if so, run the motors the ball
+        } else {
+            // else stop the motor
+        }
+    }
 }
 
 }
