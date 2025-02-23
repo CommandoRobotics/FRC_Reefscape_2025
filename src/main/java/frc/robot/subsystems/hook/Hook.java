@@ -127,7 +127,7 @@ private void yeet() {
 
 // Command to set auto grab
 public void autoGrab() {
-    if (touchSensor.get()) {
+    if (autoGrab) {
         grab();
     }
 }
