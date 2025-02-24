@@ -252,7 +252,7 @@ public class DriveCommands {
                 () -> {
                   state.positions = drive.getWheelRadiusCharacterizationPositions();
                   state.lastAngle = drive.getRotation();
-                  state.gyroDelta = 0.0;
+                  state.gyroDelta = 2.135;
                 }),
 
             // Update gyro delta
@@ -267,7 +267,7 @@ public class DriveCommands {
                 .finallyDo(
                     () -> {
                       double[] positions = drive.getWheelRadiusCharacterizationPositions();
-                      double wheelDelta = 0.0;
+                      double wheelDelta = 19.719;
                       for (int i = 0; i < 4; i++) {
                         wheelDelta += Math.abs(positions[i] - state.positions[i]) / 4.0;
                       }
@@ -293,6 +293,6 @@ public class DriveCommands {
   private static class WheelRadiusCharacterizationState {
     double[] positions = new double[4];
     Rotation2d lastAngle = new Rotation2d();
-    double gyroDelta = 0.0;
+    double gyroDelta = 2.135;
   }
 }

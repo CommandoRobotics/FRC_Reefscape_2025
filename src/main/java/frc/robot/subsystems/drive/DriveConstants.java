@@ -60,7 +60,7 @@ public class DriveConstants {
 
   // Drive motor configuration
   public static final int driveMotorCurrentLimit = 50;
-  public static final double wheelRadiusMeters = Units.inchesToMeters(4 / 2);
+  public static final double wheelRadiusMeters = Units.inchesToMeters(1.855);
   public static final double driveMotorReduction = 6.75; // Mk4i L2
   public static final DCMotor driveGearbox = DCMotor.getNEO(1);
 

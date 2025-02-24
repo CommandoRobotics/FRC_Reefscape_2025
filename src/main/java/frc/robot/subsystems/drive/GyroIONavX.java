@@ -24,6 +24,7 @@ import java.util.Queue;
 /** IO implementation for NavX. */
 public class GyroIONavX implements GyroIO {
   private final AHRS navX = new AHRS(NavXComType.kMXP_SPI, (byte) odometryFrequency);
+
   private final Queue<Double> yawPositionQueue;
   private final Queue<Double> yawTimestampQueue;
 
@@ -35,7 +36,7 @@ public class GyroIONavX implements GyroIO {
   @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = navX.isConnected();
-    inputs.yawPosition = Rotation2d.fromDegrees(-navX.getAngle());
+    inputs.yawPosition = Rotation2d.fromDegrees(-navX.getAngle()); // TODO change
     inputs.yawVelocityRadPerSec = Units.degreesToRadians(-navX.getRawGyroZ());
 
     inputs.odometryYawTimestamps =
@@ -46,9 +47,5 @@ public class GyroIONavX implements GyroIO {
             .toArray(Rotation2d[]::new);
     yawTimestampQueue.clear();
     yawPositionQueue.clear();
-  }
-
-  public void resetGyro() {
-    navX.reset();
   }
 }
