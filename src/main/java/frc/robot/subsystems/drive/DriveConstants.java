@@ -35,10 +35,10 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(0); // 1.667 2.76 -.1
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0); // -0.252 -.15
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0); // 1.437 -.752
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(0); // 1.534 -2.485
+  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(1.706); // 1.667 2.76 -.1
+  public static final Rotation2d frontRightZeroRotation = new Rotation2d(-0.194); // -0.252 -.15
+  public static final Rotation2d backLeftZeroRotation = new Rotation2d(1.376); // 1.437 -.752
+  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.612); // 1.534 -2.485
 
   // Device CAN IDs
   public static final int pigeonCanId = 19;
@@ -97,10 +97,10 @@ public class DriveConstants {
 
   // CANcoder offsets from programming bot
   // TODO: Change CANcoder offsets to values for competition bot
-  public static final double frontLeftCANCoderOffset = 95.5; // 162.15804;
-  public static final double frontRightCANCoderOffset = -13.6248; // 344.00376;
-  public static final double backLeftCANCoderOffset = 81.972; // 208.6524 + 10;
-  public static final double backRightCANCoderOffset = 90.0875; // 278.34948;
+  public static final double frontLeftCANCoderOffset = 0; // 95.5; // 162.15804;
+  public static final double frontRightCANCoderOffset = 0; // -13.6248; // 344.00376;
+  public static final double backLeftCANCoderOffset = 0; // 81.972; // 208.6524 + 10;
+  public static final double backRightCANCoderOffset = 0; // 90.0875; // 278.34948;
 
   // Turn PID configuration
   public static final double turnKp = 2.0;
