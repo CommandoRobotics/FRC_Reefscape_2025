@@ -97,10 +97,10 @@ public class DriveConstants {
 
   // CANcoder offsets from programming bot
   // TODO: Change CANcoder offsets to values for competition bot
-  public static final double frontLeftCANCoderOffset = 95.186;
-  public static final double frontRightCANCoderOffset = 346.992;
-  public static final double backLeftCANCoderOffset = 82.354;
-  public static final double backRightCANCoderOffset = 87.527;
+  public static final double frontLeftCANCoderOffset = 95.5; // 95.186;
+  public static final double frontRightCANCoderOffset = -13.6482; // 346.992;
+  public static final double backLeftCANCoderOffset = 81.972; // 82.354;
+  public static final double backRightCANCoderOffset = 90.0875; // 87.527;
 
   // Turn PID configuration
   public static final double turnKp = 2.0;
