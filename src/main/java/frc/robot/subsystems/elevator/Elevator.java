@@ -72,6 +72,7 @@ public class Elevator extends SubsystemBase {
 
  private final double elevatorDownSpeed = -0.8;
  private final double elevatorDownSlowSpeed = -0.4;
+ private final double elevatorLockSpeed = 0.05;
 
 
  // Constructor
@@ -113,6 +114,12 @@ public void stop() {
   right_motor.stopMotor();
 }
 
+public void lockElevator(){
+  left_motor.set(elevatorLockSpeed);
+  right_motor.set(-elevatorLockSpeed);
+
+}
+
 
  public void move(double speed) {
    left_motor.set(speed);
@@ -140,7 +147,7 @@ public void stop() {
 
   } else { 
     // stops elevator
-    move(0);
+    move(elevatorLockSpeed);
   }
  }
 
@@ -228,7 +235,6 @@ public void stop() {
   public void periodic() {
     getCurrentPosition();  // updates current position of the robot every 20 ms
 
-    moveToDesiredPostion(getCurrentPosition()); // keeps robot at current position 
 
   }
  
