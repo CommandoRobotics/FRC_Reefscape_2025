@@ -202,7 +202,8 @@ public class ModuleIOSpark implements ModuleIO {
         5,
         () ->
             turnEncoder.setPosition(
-                Units.rotationsToRadians(cancoder.getAbsolutePosition().getValueAsDouble())));
+                Units.rotationsToRadians(
+                    cancoder.getAbsolutePosition().waitForUpdate(0.1).getValueAsDouble())));
 
     // Create odometry queues
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
@@ -251,6 +252,13 @@ public class ModuleIOSpark implements ModuleIO {
     timestampQueue.clear();
     drivePositionQueue.clear();
     turnPositionQueue.clear();
+  }
+
+  // synchronizes absolute and relative encoders
+  public void resetToAbsolute() {
+    turnEncoder.setPosition(
+        Units.rotationsToRadians(
+            cancoder.getAbsolutePosition().waitForUpdate(0.1).getValueAsDouble()));
   }
 
   @Override

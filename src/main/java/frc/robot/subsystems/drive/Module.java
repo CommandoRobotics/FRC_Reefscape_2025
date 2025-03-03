@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import org.littletonrobotics.junction.Logger;
 
 public class Module {
-  private final ModuleIO io;
+  private final ModuleIOSpark io;
   private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
   private final int index;
 
@@ -31,7 +31,7 @@ public class Module {
   private final Alert turnDisconnectedAlert;
   private SwerveModulePosition[] odometryPositions = new SwerveModulePosition[] {};
 
-  public Module(ModuleIO io, int index) {
+  public Module(ModuleIOSpark io, int index) {
     this.io = io;
     this.index = index;
     driveDisconnectedAlert =
@@ -82,6 +82,10 @@ public class Module {
   public void stop() {
     io.setDriveOpenLoop(0.0);
     io.setTurnOpenLoop(0.0);
+  }
+
+  public void updateRelativeEncoders() {
+    io.resetToAbsolute();
   }
 
   /** Returns the current turn angle of the module. */
