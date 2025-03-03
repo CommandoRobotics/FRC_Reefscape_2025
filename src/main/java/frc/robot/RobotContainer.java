@@ -15,7 +15,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -86,9 +85,9 @@ public class RobotContainer {
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-        autoChooser.addOption("programmingtestpatplanner", new PathPlannerAuto("programmingtestauto"));
-        autoChooser.addOption(
-            "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+    autoChooser.addOption("programmingtestpatplanner", new PathPlannerAuto("programmingtestauto"));
+    autoChooser.addOption(
+        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 
     /*  // Set up SysId routines
         autoChooser.addOption(
@@ -122,9 +121,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> controller.getRightX()));
+            () -> controller.getLeftY(),
+            () -> controller.getLeftX(),
+            () -> -controller.getRightX()));
 
     controller.y().whileTrue(Commands.run(() -> drive.synchronizeEncoders(), drive));
 
