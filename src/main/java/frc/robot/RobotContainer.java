@@ -148,6 +148,12 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
+
+    controller.y().whileTrue(Commands.run(() -> hand.setPosition(30), hand));
+
+    controller.leftBumper().whileTrue(Commands.run(() -> hand.setPosition(0), hand));
+
+    controller.rightBumper().whileTrue(Commands.run(() -> hand.setPosition(90), hand));
   }
 
   /**

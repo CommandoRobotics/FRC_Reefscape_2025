@@ -1,10 +1,8 @@
 package frc.robot.subsystems.hand;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -22,7 +20,7 @@ public class Hand extends SubsystemBase {
   private SparkMax rollerMotor;
   private DigitalInput handBeamBreak;
   private SparkMaxConfig wristMotorConfig;
-  private AbsoluteEncoder wristEncoder;
+  private SparkAbsoluteEncoder wristEncoder;
   private SparkClosedLoopController wristClosedLoopController;
 
   private static final double kP = 0.05; // Tune these values as needed
@@ -72,8 +70,8 @@ public class Hand extends SubsystemBase {
     // the SPARK MAX is replaced.
     // kPersistParameters is used to ensure the configuration is not lost when  the SPARK MAX loses
     // power. This is useful for power cycles that may occur mid-operation.
-    wristMotor.configure(
-        wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    //  wristMotor.configure(
+    //     wristMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   public void resetWristEncoder() { // resets the wrist encoder
@@ -176,9 +174,16 @@ public class Hand extends SubsystemBase {
   public void periodic() {
     // The arm is perpendicular to the Upright shoulder.
     SmartDashboard.putBoolean("hand detects coral", coralInHand());
+
     double actualDegrees = Rotation2d.fromRotations(wristEncoder.getPosition()).getDegrees();
-    SmartDashboard.putNumber("Wrist Angle (degrees)", actualDegrees);
-    setPosition(actualDegrees);
+    SmartDashboard.putNumber("Wrist Angle", actualDegrees);
+
+    double motorPosition =
+        34
+            + (Rotation2d.fromRotations(wristMotor.getAlternateEncoder().getPosition()).getDegrees()
+                / 2);
+
+    SmartDashboard.putNumber("Wrist Angle Debug (degrees)", motorPosition);
   }
 
   @Override
