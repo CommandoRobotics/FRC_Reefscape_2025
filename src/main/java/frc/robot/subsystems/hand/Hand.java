@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +22,7 @@ public class Hand extends SubsystemBase {
   private DigitalInput handBeamBreak;
   private SparkMaxConfig wristMotorConfig;
   private SparkAbsoluteEncoder wristEncoder;
+  private DutyCycleEncoder wristEncoder2;
   private SparkClosedLoopController wristClosedLoopController;
 
   private static final double kP = 0.05; // Tune these values as needed
@@ -28,7 +30,7 @@ public class Hand extends SubsystemBase {
   private static final double kD = 0.0;
 
   private static double wristEncoderOffsetRotations =
-      0.0; // The encoder reads zero this many rotations from where we expect zero degrees to be.
+      0.2; // The encoder reads zero this many rotations from where we expect zero degrees to be.
   private static final double rollerSpeed = 0.5; // Speed of the roller motor
   private static final double minDegrees = 0; // Software limit switch // TODO tune this value
   private static final double maxDegrees = 100; // Software limit switch // TODO tune this value
@@ -53,6 +55,7 @@ public class Hand extends SubsystemBase {
     // Configure the wrist motor
     wristClosedLoopController = wristMotor.getClosedLoopController();
     wristEncoder = wristMotor.getAbsoluteEncoder();
+
     // Configure the wrist motor
     wristMotorConfig = new SparkMaxConfig();
     wristMotorConfig
