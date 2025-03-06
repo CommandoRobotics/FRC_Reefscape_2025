@@ -30,7 +30,6 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -48,7 +47,6 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
   private final CommandXboxController armController = new CommandXboxController(1);
-
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -153,17 +151,10 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    
-    elevator.setDefaultCommand(elevator.manualControlElevatorCommand(() -> -armController.getRightY()));
 
+    elevator.setDefaultCommand(
+        elevator.manualControlElevatorCommand(() -> -armController.getRightY()));
   }
-
-
-
-
-
-
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
