@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.arcade.Arcade;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -42,9 +44,12 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Arcade arcade = new Arcade();
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandGenericHID reefPad = new CommandGenericHID(2);
+  private final CommandGenericHID otherPad = new CommandGenericHID(3);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -161,6 +166,30 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
+
+    reefPad.button(1).onTrue(arcade.reefAButtonCommand());
+    reefPad.button(2).onTrue(arcade.reefBButtonCommand());
+    reefPad.button(3).onTrue(arcade.reefCButtonCommand());
+    reefPad.button(4).onTrue(arcade.reefDButtonCommand());
+    reefPad.button(5).onTrue(arcade.reefEButtonCommand());
+    reefPad.button(6).onTrue(arcade.reefFButtonCommand());
+    reefPad.button(7).onTrue(arcade.reefGButtonCommand());
+    reefPad.button(8).onTrue(arcade.reefHButtonCommand());
+    reefPad.button(9).onTrue(arcade.reefIButtonCommand());
+    reefPad.button(10).onTrue(arcade.reefJButtonCommand());
+    reefPad.button(11).onTrue(arcade.reefKButtonCommand());
+    reefPad.button(12).onTrue(arcade.reefLButtonCommand());
+
+    otherPad.button(1).onTrue(arcade.climbButtonCommand());
+    otherPad.button(2).onTrue(arcade.leftProcessorButtonCommand());
+    otherPad.button(3).onTrue(arcade.rightProcessorButtonCommand());
+    otherPad.button(4).onTrue(arcade.leftCoralStationButtonCommand());
+    otherPad.button(5).onTrue(arcade.rightCoralStationButtonCommand());
+    otherPad.button(6).onTrue(arcade.l1ButtonCommand());
+    otherPad.button(7).onTrue(arcade.l2ButtonCommand());
+    otherPad.button(8).onTrue(arcade.l3ButtonCommand());
+    otherPad.button(9).onTrue(arcade.l4ButtonCommand());
+    otherPad.button(10).onTrue(arcade.bargeButtonCommand());
   }
 
   /**
