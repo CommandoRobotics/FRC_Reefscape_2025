@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -67,6 +68,24 @@ public class Elevator extends SubsystemBase {
  private final Color belowL1Color = new Color(255, 0, 0); // Red 1
  private final Color bottomStopColor = new Color(125, 15, 15); // Dark Red 0
 
+ private final Color red = new Color(1, 1, 1); //red
+ private final Color orange = new Color(1, 1, 1); //orange
+ private final Color darkYellow = new Color(1, 1, 1); //dark yellow
+ private final Color lightYellow = new Color(1, 1, 1); //light yellow
+ private final Color lightGreen = new Color(1, 1, 1); //light green
+ private final Color green = new Color(1, 1, 1); //green
+ private final Color darkGreen = new Color(1, 1, 1); //dark green
+ private final Color blue = new Color(1, 1, 1); //blue
+ private final Color purple = new Color(1, 1, 1); //purple
+ private final Color magenta = new Color(1, 1, 1); //magenta purple
+ private final Color lightBrown = new Color(1, 1, 1); //light brown
+ private final Color darkBrown = new Color(1, 1, 1); //dark brown
+ private final Color grey = new Color(1, 1, 1); //grey
+ private final Color black = new Color(1, 1, 1); //black 
+ private final Color white = new Color(1, 1, 1); //white 
+
+ 
+
  private final double elevatorUpSpeed = 0.8;
  private final double elevatorUpSlowSpeed = 0.4;
 
@@ -104,6 +123,25 @@ public class Elevator extends SubsystemBase {
    colorMatcher.addColorMatch(L1Color);
    colorMatcher.addColorMatch(belowL1Color);
    colorMatcher.addColorMatch(bottomStopColor);
+
+   colorMatcher.addColorMatch(red);
+   colorMatcher.addColorMatch(orange);
+   colorMatcher.addColorMatch(darkYellow);
+   colorMatcher.addColorMatch(lightYellow);
+   colorMatcher.addColorMatch(lightGreen);
+   colorMatcher.addColorMatch(green);
+   colorMatcher.addColorMatch(darkGreen);
+   colorMatcher.addColorMatch(blue);
+   colorMatcher.addColorMatch(purple);
+   colorMatcher.addColorMatch(magenta);
+   colorMatcher.addColorMatch(lightBrown);
+   colorMatcher.addColorMatch(darkBrown);
+   colorMatcher.addColorMatch(grey);
+   colorMatcher.addColorMatch(black);
+   colorMatcher.addColorMatch(white);
+
+
+
 
 
  }
@@ -196,6 +234,50 @@ public void lockElevator(){
   }
    return colorIndex;
    }
+
+
+   public String outputColorReading() {
+    String seenColor;
+    Color detectedColor = rainbowEncoder.getColor();
+    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+    if (match.color == red) {
+      seenColor = "red";
+    } else if (match.color == orange) {
+      seenColor = "orange";
+    } else if (match.color == lightYellow) {
+      seenColor = "lightyellow";
+    } else if (match.color == darkYellow) {
+      seenColor = "darkyellow";
+    } else if (match.color == green) {
+      seenColor = "green";
+    } else if (match.color == lightGreen) {
+      seenColor = "lightgreen";
+    } else if (match.color == darkGreen) {
+      seenColor = "dark green";
+    } else if (match.color == blue) {
+      seenColor = "blue";
+    } else if (match.color == purple) {
+      seenColor = "purple";
+    } else if (match.color == magenta) {
+      seenColor = "magenta";
+    } else if (match.color == lightBrown) {
+      seenColor = "light brown";
+    } else if (match.color == darkBrown) {
+      seenColor = "dark brown";
+    } else if (match.color == grey) {
+      seenColor = "grey";
+    } else if (match.color == black) {
+      seenColor = "black";
+    } else if (match.color == white) {
+      seenColor = "white";
+    } else {
+      seenColor = "unkown";
+    }
+
+    return seenColor;
+  }
+  
     
 
   //***************** COMMANDS **********************************************/
@@ -234,6 +316,22 @@ public void lockElevator(){
   @Override 
   public void periodic() {
     getCurrentPosition();  // updates current position of the robot every 20 ms
+
+
+    outputColorReading();
+
+    rainbowEncoder.getColor();
+
+    Color seenColor = rainbowEncoder.getColor();
+    double red = seenColor.red;
+    double green = seenColor.green;
+    double blue = seenColor.blue;
+
+    SmartDashboard.putNumber("color red", red);
+    SmartDashboard.putNumber("color green", green);
+    SmartDashboard.putNumber("color blue", blue);
+
+   // SmartDashboard.putString("seen color is: ", outputColorReading());
 
 
   }
