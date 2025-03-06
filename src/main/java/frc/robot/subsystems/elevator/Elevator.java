@@ -277,7 +277,51 @@ public void lockElevator(){
 
     return seenColor;
   }
+
+
+  public String outputHeightReading() {
+    String seenColor;
+    Color detectedColor = rainbowEncoder.getColor();
+    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+    if (match.color == topStopColor) {
+      seenColor = "at the top";
+    } else if (match.color == aboveBargeColor) {
+      seenColor = "above barge";
+    } else if (match.color == bargeColor) {
+      seenColor = "at barge";
+    } else if (match.color == belowBargeColor) {
+      seenColor = "below barge";
+    } else if (match.color == aboveL4Color) {
+      seenColor = "above L4";
+    } else if (match.color == L4Color) {
+      seenColor = "at L4";
+    } else if (match.color == belowL4Color) {
+      seenColor = "below L4";
+    } else if (match.color == aboveL3Color) {
+      seenColor = "above L3";
+    } else if (match.color == L3Color) {
+      seenColor = "at L3";
+    } else if (match.color == belowL3Color) {
+      seenColor = "below L3";
+    } else if (match.color == aboveL2Color) {
+      seenColor = "above L2 ";
+    } else if (match.color == L2Color) {
+      seenColor = "at L2";
+    } else if (match.color == belowL2Color) {
+      seenColor = "below L2";
+    } else if (match.color == aboveL1Color) {
+      seenColor = "above L1";
+    } else if (match.color == L1Color) {
+      seenColor = "at L1";
+    } else {
+      seenColor = "unkown";
+    }
+
+    return seenColor; //TODO add rest of heights
+  }
   
+ 
     
 
   //***************** COMMANDS **********************************************/
