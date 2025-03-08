@@ -1,13 +1,9 @@
-package frc.robot.subsystems.hand;
+package frc.robot.subsystems.handmanual;
 
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -16,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.DoubleSupplier;
 
-public class Hand extends SubsystemBase {
+public class HandManual extends SubsystemBase {
 
   private SparkMax wristMotor;
   private SparkMax rollerMotor;
@@ -49,9 +45,9 @@ public class Hand extends SubsystemBase {
   private static final double L4PositionDegrees =
       90; // position in degrees the hand needs to be to score at L2 // TODO tune this value
 
-  public Hand() {
-    wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
-    rollerMotor = new SparkMax(62, SparkMax.MotorType.kBrushless);
+  public HandManual() {
+    wristMotor = new SparkMax(61, SparkMax.MotorType.kBrushless);
+    rollerMotor = new SparkMax(53, SparkMax.MotorType.kBrushless);
     handBeamBreak = new DigitalInput(9); // TODO change port number
     // Configure the wrist motor
     wristClosedLoopController = wristMotor.getClosedLoopController();
@@ -59,16 +55,6 @@ public class Hand extends SubsystemBase {
 
     // Configure the wrist motor
     wristMotorConfig = new SparkMaxConfig();
-    wristMotorConfig
-        .closedLoop
-        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-        // Set PID values for position control. Deefault to slot 0.
-        .p(kP)
-        .i(kI)
-        .d(kD)
-        .outputRange(
-            Rotation2d.fromDegrees(minDegrees).getRotations(),
-            Rotation2d.fromDegrees(maxDegrees).getRotations());
 
     // kResetSafeParameters is used to get the SPARK MAX to a known state. This is useful in case
     // the SPARK MAX is replaced.
@@ -80,23 +66,6 @@ public class Hand extends SubsystemBase {
 
   public void resetWristEncoder() { // resets the wrist encoder
     wristEncoderOffsetRotations = Rotation2d.fromRotations(wristEncoder.getPosition()).getDegrees();
-  }
-
-  private double targetPositionAsMotorControllerSetPoint(Rotation2d targetAngle) {
-    Rotation2d adjustedTargetAngle =
-        targetAngle.minus(Rotation2d.fromRotations(wristEncoderOffsetRotations));
-    double targetAngleInRadians = adjustedTargetAngle.getRadians();
-    double normalizedAngleInRadians = MathUtil.angleModulus(targetAngleInRadians);
-    Rotation2d normalizedTargetAngle = Rotation2d.fromRadians(normalizedAngleInRadians);
-    return normalizedTargetAngle.getDegrees() / 365.0;
-  }
-
-  public void setPosition(double newPositioninDegrees) {
-    Rotation2d newRotation = Rotation2d.fromDegrees(newPositioninDegrees);
-    wristClosedLoopController.setReference(
-        targetPositionAsMotorControllerSetPoint(newRotation),
-        ControlType.kPosition,
-        ClosedLoopSlot.kSlot0);
   }
 
   public boolean coralInHand() { // checks if coral is fully captured
@@ -112,43 +81,6 @@ public class Hand extends SubsystemBase {
     wristMotor.set(wristPower.getAsDouble());
   }
 
-  public void autoIntakeHumanPlayer() { // automatically intakes coral from human player
-    setPosition(intakeHumanPlayerPositionDegrees);
-    if (coralInHand()) {
-      rollerMotor.set(rollerSpeed);
-      wristMotor.set(-.2);
-    } else {
-      rollerMotor.set(0);
-    }
-  }
-
-  public void autoIntakeIndexer() { // automatically intakes coral from indexer
-    setPosition(intakeFromIndexerPositionDegrees);
-    if (!coralInHand()) {
-      rollerMotor.set(-rollerSpeed);
-    } else {
-      rollerMotor.set(0);
-    }
-  }
-
-  public void expelCoral() { // expels coral
-    rollerMotor.set(-rollerSpeed);
-  }
-
-  public void goToScorePostion(String Level) { // scores coral TAKES INPUT of L1, L2, L3, or L4
-    if (Level == "L1") {
-      setPosition(L1PositionDegrees);
-    } else if (Level == "L2") {
-      setPosition(L2PositionDegrees);
-    } else if (Level == "L3") {
-      setPosition(L3PositionDegrees);
-    } else if (Level == "L4") {
-      setPosition(L4PositionDegrees);
-    } else {
-      setPosition(0);
-    }
-  }
-
   // ********************* COMMANDS ***************************/
 
   public Command stopCommand() { // stops all hand subsystem motors
@@ -157,32 +89,6 @@ public class Hand extends SubsystemBase {
 
   public Command manualWristCommand(DoubleSupplier wristPower) { // stops all hand subsystem motors
     return run(() -> manualWrist(wristPower));
-  }
-
-  public Command setPositionCommand(
-      double targetPosition) { // runs the wrist motor until the target position is reached
-    return run(() -> setPosition(targetPosition));
-  }
-
-  public Command autoIntakeHumanPlayerCommand() { // automatically intakes coral from human player
-    return run(() -> autoIntakeHumanPlayer());
-  }
-
-  public Command resetWristCommand() { // automatically intakes coral from human player
-    return run(() -> resetWristEncoder());
-  }
-
-  public Command autoIntakeIndexerCommand() { // automatically intakes coral from indexer
-    return run(() -> autoIntakeIndexer());
-  }
-
-  public Command expelCoralCommand() { // expels coral
-    return run(() -> expelCoral());
-  }
-
-  public Command goToScorePostionCommand(
-      String Level) { // scores coral TAKES INPUT of L1, L2, L3, or L4
-    return run(() -> goToScorePostion(Level));
   }
 
   // ********************* END OF COMMANDS ***************************/
@@ -204,7 +110,6 @@ public class Hand extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // The arm is perpendicular to the Upright shoulder.
-    setPosition(L3PositionDegrees);
     // SmartDashboard.putBoolean("hand detects coral", coralInHand());
     // double currentAngle = Rotation2d.fromRotations(wristEncoder.getPosition()).getDegrees();
     // SmartDashboard.putNumber("Wrist Angle (degrees)", currentAngle);

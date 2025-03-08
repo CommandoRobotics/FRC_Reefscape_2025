@@ -29,7 +29,7 @@ import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
-import frc.robot.subsystems.hand.Hand;
+import frc.robot.subsystems.handmanual.HandManual;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -41,7 +41,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Hand hand;
+  private final HandManual hand;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -53,7 +53,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    hand = new Hand();
+    hand = new HandManual();
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -153,13 +153,13 @@ public class RobotContainer {
 
     hand.setDefaultCommand(hand.manualWristCommand(() -> controllerarm.getRightY()));
 
-    controllerarm.y().whileTrue(Commands.run(() -> hand.setPosition(0), hand));
+    // controllerarm.y().whileTrue(Commands.run(() -> hand.setPosition(0), hand));
 
-    controllerarm.leftBumper().whileTrue(Commands.run(() -> hand.setPosition(-150), hand));
+    // controllerarm.leftBumper().whileTrue(Commands.run(() -> hand.setPosition(-150), hand));
 
-    controllerarm.rightBumper().whileTrue(Commands.run(() -> hand.setPosition(150), hand));
+    // controllerarm.rightBumper().whileTrue(Commands.run(() -> hand.setPosition(150), hand));
 
-    controllerarm.b().whileTrue(Commands.run(() -> hand.autoIntakeHumanPlayer(), hand));
+    // controllerarm.b().whileTrue(Commands.run(() -> hand.autoIntakeHumanPlayer(), hand));
   }
 
   /**
