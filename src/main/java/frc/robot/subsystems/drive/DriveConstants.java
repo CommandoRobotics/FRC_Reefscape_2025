@@ -35,29 +35,30 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(1.667); // 1.663 1.661 1.706
+  public static final Rotation2d frontLeftZeroRotation =
+      new Rotation2d(1.19192); // 1.663 1.661 1.706
   public static final Rotation2d frontRightZeroRotation =
-      new Rotation2d(-0.238); // -0.258 -0.291 -0.194
+      new Rotation2d(-0.377362); // -0.258 -0.291 -0.194
   public static final Rotation2d backLeftZeroRotation =
-      new Rotation2d(1.43068); // 1.427 1.440 1.376
+      new Rotation2d(1.793221); // 1.427 1.440 1.376
   public static final Rotation2d backRightZeroRotation =
-      new Rotation2d(1.57232); // 1.647 - 0.102 1.564 1.612
+      new Rotation2d(-0.055229); // 1.647 - 0.102 1.564 1.612
 
   // Device CAN IDs
   public static final int pigeonCanId = 19;
 
-  public static final int frontLeftDriveCanId = 2;
-  public static final int backLeftDriveCanId = 6;
-  public static final int frontRightDriveCanId = 4;
-  public static final int backRightDriveCanId = 8;
+  public static final int frontLeftDriveCanId = 7;
+  public static final int backLeftDriveCanId = 5;
+  public static final int frontRightDriveCanId = 1;
+  public static final int backRightDriveCanId = 3;
 
-  public static final int frontLeftTurnCanId = 3;
-  public static final int backLeftTurnCanId = 7;
-  public static final int frontRightTurnCanId = 5;
-  public static final int backRightTurnCanId = 9;
+  public static final int frontLeftTurnCanId = 6;
+  public static final int backLeftTurnCanId = 4;
+  public static final int frontRightTurnCanId = 8;
+  public static final int backRightTurnCanId = 2;
 
-  public static final int frontLeftCANCoderCanId = 11;
-  public static final int frontRightCANCoderCanId = 12;
+  public static final int frontLeftCANCoderCanId = 12;
+  public static final int frontRightCANCoderCanId = 11;
   public static final int backLeftCANCoderCanId = 13;
   public static final int backRightCANCoderCanId = 14;
 
