@@ -153,7 +153,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     elevator.setDefaultCommand(
-        elevator.manualControlElevatorCommand(() -> -armController.getRightY()));
+        elevator.manualControlElevatorCommand(() -> armController.getRightY()));
   }
 
   /**
