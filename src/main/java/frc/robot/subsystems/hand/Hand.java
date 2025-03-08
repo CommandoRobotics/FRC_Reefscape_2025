@@ -50,7 +50,7 @@ public class Hand extends SubsystemBase {
       90; // position in degrees the hand needs to be to score at L2 // TODO tune this value
 
   public Hand() {
-    wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
+    wristMotor = new SparkMax(61, SparkMax.MotorType.kBrushless);
     rollerMotor = new SparkMax(62, SparkMax.MotorType.kBrushless);
     handBeamBreak = new DigitalInput(9); // TODO change port number
     // Configure the wrist motor
