@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.DoubleSupplier;
 
 public class Hand extends SubsystemBase {
 
@@ -25,14 +26,14 @@ public class Hand extends SubsystemBase {
   private DutyCycleEncoder wristEncoder2;
   private SparkClosedLoopController wristClosedLoopController;
 
-  private static final double kP = 0.05; // Tune these values as needed
+  private static final double kP = 12; // Tune these values as needed
   private static final double kI = 0.0;
   private static final double kD = 0.0;
 
   private static double wristEncoderOffsetRotations =
-      0.2; // The encoder reads zero this many rotations from where we expect zero degrees to be.
+      0; // The encoder reads zero this many rotations from where we expect zero degrees to be.
   private static final double rollerSpeed = 0.5; // Speed of the roller motor
-  private static final double minDegrees = 0; // Software limit switch // TODO tune this value
+  private static final double minDegrees = -181; // Software limit switch // TODO tune this value
   private static final double maxDegrees = 100; // Software limit switch // TODO tune this value
   private static final double intakeHumanPlayerPositionDegrees =
       95; // position in degrees the hand needs to be to intake from human player // TODO tune this
@@ -49,8 +50,8 @@ public class Hand extends SubsystemBase {
       90; // position in degrees the hand needs to be to score at L2 // TODO tune this value
 
   public Hand() {
-    wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
-    rollerMotor = new SparkMax(53, SparkMax.MotorType.kBrushless);
+    wristMotor = new SparkMax(61, SparkMax.MotorType.kBrushless);
+    rollerMotor = new SparkMax(62, SparkMax.MotorType.kBrushless);
     handBeamBreak = new DigitalInput(9); // TODO change port number
     // Configure the wrist motor
     wristClosedLoopController = wristMotor.getClosedLoopController();
@@ -62,9 +63,9 @@ public class Hand extends SubsystemBase {
         .closedLoop
         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
         // Set PID values for position control. Deefault to slot 0.
-        .p(0.1)
-        .i(0)
-        .d(0)
+        .p(kP)
+        .i(kI)
+        .d(kD)
         .outputRange(
             Rotation2d.fromDegrees(minDegrees).getRotations(),
             Rotation2d.fromDegrees(maxDegrees).getRotations());
@@ -107,10 +108,15 @@ public class Hand extends SubsystemBase {
     rollerMotor.set(0);
   }
 
+  public void manualWrist(DoubleSupplier wristPower) {
+    wristMotor.set(wristPower.getAsDouble());
+  }
+
   public void autoIntakeHumanPlayer() { // automatically intakes coral from human player
     setPosition(intakeHumanPlayerPositionDegrees);
-    if (!coralInHand()) {
+    if (coralInHand()) {
       rollerMotor.set(rollerSpeed);
+      wristMotor.set(-.2);
     } else {
       rollerMotor.set(0);
     }
@@ -149,6 +155,10 @@ public class Hand extends SubsystemBase {
     return run(() -> stop());
   }
 
+  public Command manualWristCommand(DoubleSupplier wristPower) { // stops all hand subsystem motors
+    return run(() -> manualWrist(wristPower));
+  }
+
   public Command setPositionCommand(
       double targetPosition) { // runs the wrist motor until the target position is reached
     return run(() -> setPosition(targetPosition));
@@ -156,6 +166,10 @@ public class Hand extends SubsystemBase {
 
   public Command autoIntakeHumanPlayerCommand() { // automatically intakes coral from human player
     return run(() -> autoIntakeHumanPlayer());
+  }
+
+  public Command resetWristCommand() { // automatically intakes coral from human player
+    return run(() -> resetWristEncoder());
   }
 
   public Command autoIntakeIndexerCommand() { // automatically intakes coral from indexer
@@ -182,9 +196,7 @@ public class Hand extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Angle", actualDegrees);
 
     double motorPosition =
-        34
-            + (Rotation2d.fromRotations(wristMotor.getAlternateEncoder().getPosition()).getDegrees()
-                / 2);
+        (Rotation2d.fromRotations(wristMotor.getAlternateEncoder().getPosition()).getDegrees() / 2);
 
     SmartDashboard.putNumber("Wrist Angle Debug (degrees)", motorPosition);
   }

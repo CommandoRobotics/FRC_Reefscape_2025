@@ -46,6 +46,8 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
+  private final CommandXboxController controllerarm = new CommandXboxController(1);
+
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -149,11 +151,15 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller.y().whileTrue(Commands.run(() -> hand.setPosition(30), hand));
+    hand.setDefaultCommand(hand.manualWristCommand(() -> controllerarm.getRightY()));
 
-    controller.leftBumper().whileTrue(Commands.run(() -> hand.setPosition(0), hand));
+    controllerarm.y().whileTrue(Commands.run(() -> hand.setPosition(0), hand));
 
-    controller.rightBumper().whileTrue(Commands.run(() -> hand.setPosition(90), hand));
+    controllerarm.leftBumper().whileTrue(Commands.run(() -> hand.setPosition(-150), hand));
+
+    controllerarm.rightBumper().whileTrue(Commands.run(() -> hand.setPosition(150), hand));
+
+    controllerarm.b().whileTrue(Commands.run(() -> hand.autoIntakeHumanPlayer(), hand));
   }
 
   /**
