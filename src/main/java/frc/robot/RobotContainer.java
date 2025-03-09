@@ -27,6 +27,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.hand.Hand;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -47,6 +48,8 @@ public class RobotContainer {
   private final LoggedDashboardChooser<Command> autoChooser;
 
   private final Elevator elevator;
+
+  private final Hand hand;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,6 +86,7 @@ public class RobotContainer {
       break; */
 
     elevator = new Elevator();
+    hand = new Hand();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -155,11 +159,19 @@ public class RobotContainer {
     elevator.setDefaultCommand(
         elevator.manualControlElevatorCommand(() -> armController.getRightY()));
 
-    armController.a().whileTrue(elevator.moveL3Command());
+      hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
 
-    armController.b().whileTrue(elevator.moveL2Command());
+    armController.povLeft().whileTrue(elevator.moveL3Command());
 
-    armController.x().whileTrue(elevator.moveL4Command());
+    armController.povDown().whileTrue(elevator.moveL2Command());
+
+    armController.povUp().whileTrue(elevator.moveL4Command());
+
+    armController.b().onTrue(hand.autoIntakeCommand()).onFalse(hand.stopCommand());
+
+    armController.a().onTrue(hand.primeEjectCommand()).onFalse(hand.stopCommand());
+
+    armController.x().onTrue(hand.ejectCommand()).onFalse(hand.stopCommand()); 
   }
 
   /**
