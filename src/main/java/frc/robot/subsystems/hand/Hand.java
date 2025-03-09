@@ -1,6 +1,6 @@
 package frc.robot.subsystems.hand;
 
-import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -17,18 +17,19 @@ public class Hand extends SubsystemBase {
   private DigitalInput frontBeamBreak;
   private DigitalInput backBeamBreak;
   private DigitalInput handBeamBreak2;
+  private RelativeEncoder wristEncoder;
 
   private SparkMaxConfig wristMotorConfig;
-  private AbsoluteEncoder wristEncoder;
   private SparkClosedLoopController wristClosedLoopController;
 
-  private double rollerSpeed = 0.5;
+  private double rollerSpeed = 1;
 
   public Hand() {
     wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
     rollerMotor = new SparkMax(53, SparkMax.MotorType.kBrushless);
     frontBeamBreak = new DigitalInput(0); // TODO change port number
     backBeamBreak = new DigitalInput(1); // TODO change port number
+    wristEncoder = wristMotor.getEncoder();
   }
 
   public boolean frontBeamBreakDetectsCoral() { // checks if coral is fully captured
@@ -41,6 +42,14 @@ public class Hand extends SubsystemBase {
 
   public void stop() { // stops the hand subsystem
     rollerMotor.set(0);
+  }
+
+  public void resetWristEncoder() {
+    wristEncoder.setPosition(0);
+  }
+
+  public double wristPosition() {
+    return wristEncoder.getPosition();
   }
 
   public void manualHand(double power) {
@@ -77,6 +86,10 @@ public class Hand extends SubsystemBase {
     return run(() -> stop());
   }
 
+  public Command resetWristCommand() { // stops all hand subsystem motors
+    return run(() -> resetWristEncoder());
+  }
+
   public Command manualControlHandCommand(DoubleSupplier power) {
     return run(() -> manualHand(power.getAsDouble()));
   }
@@ -101,5 +114,8 @@ public class Hand extends SubsystemBase {
 
     SmartDashboard.putBoolean("front beam break detects coral", frontBeamBreakDetectsCoral());
     SmartDashboard.putBoolean("back beam break detects coral", backBeamBreakDetectsCoral());
+    SmartDashboard.putNumber("wrist position rotations", wristPosition());
+
+    // SmartDashboard.putNumber("wrist position rotations", wristMotor.getEncoder().getPosition());
   }
 }
