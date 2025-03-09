@@ -163,7 +163,8 @@ public class RobotContainer {
     elevator.setDefaultCommand(
         elevator.manualControlElevatorCommand(() -> armController.getRightY()));
 
-    hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
+    // hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
+    hand.setDefaultCommand(hand.stopCommand());
 
     hook.setDefaultCommand(hook.manualControlHandCommand(() -> armController.getLeftTriggerAxis()));
 

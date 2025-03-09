@@ -60,7 +60,7 @@ public class Hand extends SubsystemBase {
 
   public void autoIntake() {
     if (frontBeamBreakDetectsCoral() && !backBeamBreakDetectsCoral()) {
-      rollerMotor.set(.1);
+      rollerMotor.set(rollerSpeed);
     } else if (backBeamBreakDetectsCoral()) {
       rollerMotor.set(0);
     } else {
