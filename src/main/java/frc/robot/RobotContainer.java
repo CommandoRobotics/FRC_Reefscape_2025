@@ -159,7 +159,7 @@ public class RobotContainer {
     elevator.setDefaultCommand(
         elevator.manualControlElevatorCommand(() -> armController.getRightY()));
 
-      hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
+    hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
 
     armController.povLeft().whileTrue(elevator.moveL3Command());
 
@@ -167,11 +167,11 @@ public class RobotContainer {
 
     armController.povUp().whileTrue(elevator.moveL4Command());
 
-    armController.b().onTrue(hand.autoIntakeCommand()).onFalse(hand.stopCommand());
+    armController.b().whileTrue(hand.autoIntakeCommand());
 
-    armController.a().onTrue(hand.primeEjectCommand()).onFalse(hand.stopCommand());
+    armController.a().whileTrue(hand.primeEjectCommand());
 
-    armController.x().onTrue(hand.ejectCommand()).onFalse(hand.stopCommand()); 
+    armController.x().whileTrue(hand.ejectCommand());
   }
 
   /**

@@ -40,17 +40,18 @@ public class Hand extends SubsystemBase {
   }
 
   public void stop() { // stops the hand subsystem
-    wristMotor.set(0);
     rollerMotor.set(0);
   }
 
-  public void manualHand(DoubleSupplier power) {
-    wristMotor.set(power.getAsDouble());
+  public void manualHand(double power) {
+    wristMotor.set(power);
+
+    rollerMotor.set(0);
   }
 
   public void autoIntake() {
     if (frontBeamBreakDetectsCoral() && !backBeamBreakDetectsCoral()) {
-      rollerMotor.set(rollerSpeed * .5);
+      rollerMotor.set(.1);
     } else if (backBeamBreakDetectsCoral()) {
       rollerMotor.set(0);
     } else {
@@ -77,7 +78,7 @@ public class Hand extends SubsystemBase {
   }
 
   public Command manualControlHandCommand(DoubleSupplier power) {
-    return run(() -> manualHand(power));
+    return run(() -> manualHand(power.getAsDouble()));
   }
 
   public Command autoIntakeCommand() {
