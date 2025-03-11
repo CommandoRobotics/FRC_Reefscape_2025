@@ -114,8 +114,17 @@ public class Elevator extends SubsystemBase {
   }
 
   public void move(double speed) {
+
+    
+    
     left_motor.set(speed - .07);
     right_motor.set(-speed + .07); // swap the negative if motors go the wrong direction
+  }
+
+  public void moveManual(double speed) {
+
+    left_motor.set(speed - .02);
+    right_motor.set(-speed + .02); // swap the negative if motors go the wrong direction
   }
 
   public void moveToDesiredPostion(int desiredPosition) { // moves elevator to desired position
@@ -252,7 +261,7 @@ public class Elevator extends SubsystemBase {
 
   // Use manual control. Power is -1.0 to +1.0
   public Command manualControlElevatorCommand(DoubleSupplier power) {
-    return run(() -> move(power.getAsDouble()));
+    return run(() -> moveManual(power.getAsDouble()));
   }
 
   public Command moveL2Command() {
