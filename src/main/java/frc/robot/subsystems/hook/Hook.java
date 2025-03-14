@@ -2,6 +2,7 @@ package frc.robot.subsystems.hook;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,12 +14,14 @@ public class Hook extends SubsystemBase {
   private SparkMax rollerMotor;
   private RelativeEncoder hookEncoder;
   private RelativeEncoder rollerEncoder;
+  private DigitalInput hookLimit;
 
-  private double rollerSpeed = 0.1;
+  private double rollerSpeed = 0.35;
 
   public Hook() {
     hookMotor = new SparkMax(61, SparkMax.MotorType.kBrushless);
     rollerMotor = new SparkMax(62, SparkMax.MotorType.kBrushless);
+    hookLimit = new DigitalInput(3);
 
     hookEncoder = hookMotor.getEncoder();
     rollerEncoder = rollerMotor.getEncoder();
@@ -26,6 +29,10 @@ public class Hook extends SubsystemBase {
 
   public void stop() { // stops the hand subsystem
     rollerMotor.set(0);
+  }
+
+  public boolean isAlgaeGrabbed() {
+    return hookLimit.get();
   }
 
   public void resetHookEncoder() {
@@ -48,7 +55,11 @@ public class Hook extends SubsystemBase {
 
   public void autoIntake() {
 
-    rollerMotor.set(rollerSpeed);
+    if (isAlgaeGrabbed() == true) {
+      rollerMotor.set(rollerSpeed);
+    } else {
+      rollerMotor.set(0);
+    }
   }
 
   public void Eject() {
@@ -56,8 +67,14 @@ public class Hook extends SubsystemBase {
   }
 
   public void removeAlgaeKick() {
-    rollerMotor.set(rollerSpeed);
-    hookMotor.set(1);
+    if (isAlgaeGrabbed() == true) {
+      rollerMotor.set(rollerSpeed);
+      hookMotor.set(1);
+
+    } else {
+      rollerMotor.set(0);
+      hookMotor.set(1);
+    }
   }
 
   // ********************* COMMANDS ***************************/
@@ -92,8 +109,9 @@ public class Hook extends SubsystemBase {
   public void periodic() {
     // The arm is perpendicular to the Upright shoulder.
 
-    SmartDashboard.putNumber("hook position rotations", hookPosition());
-    SmartDashboard.putNumber("hook roller position rotations", rollerRotations());
+    // SmartDashboard.putNumber("hook position rotations", hookPosition());
+    // SmartDashboard.putNumber("hook roller position rotations", rollerRotations());
+    SmartDashboard.putBoolean("there is algae", isAlgaeGrabbed());
 
     // SmartDashboard.putNumber("wrist position rotations", wristMotor.getEncoder().getPosition());
   }

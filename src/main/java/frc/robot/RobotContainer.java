@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIOSpark;
@@ -53,6 +54,8 @@ public class RobotContainer {
   private final Hand hand;
 
   private final Hook hook;
+
+  private final Climb climb;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -91,6 +94,7 @@ public class RobotContainer {
     elevator = new Elevator();
     hand = new Hand();
     hook = new Hook();
+    climb = new Climb();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -163,8 +167,7 @@ public class RobotContainer {
     elevator.setDefaultCommand(
         elevator.manualControlElevatorCommand(() -> armController.getRightY()));
 
-    // hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
-    hand.setDefaultCommand(hand.stopCommand());
+    hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
 
     hook.setDefaultCommand(hook.manualControlHandCommand(() -> armController.getLeftTriggerAxis()));
 
@@ -185,6 +188,9 @@ public class RobotContainer {
     armController.rightBumper().whileTrue(hand.ejectCommand());
 
     armController.b().whileTrue(hand.resetWristCommand());
+
+    climb.setDefaultCommand(
+        climb.manualControlClimbCommand(() -> controller.getRightTriggerAxis()));
   }
 
   /**
