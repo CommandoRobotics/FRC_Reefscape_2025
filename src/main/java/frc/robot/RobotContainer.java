@@ -142,8 +142,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> controller.getLeftY(),
-            () -> controller.getLeftX(),
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
     controller.y().whileTrue(Commands.run(() -> drive.synchronizeEncoders(), drive));
@@ -201,7 +201,7 @@ public class RobotContainer {
     armController.b().whileTrue(hand.resetWristCommand());
 
     climb.setDefaultCommand(
-        climb.manualControlClimbCommand(() -> controller.getRightTriggerAxis()));
+        climb.manualControlClimbCommand(() -> -controller.getRightTriggerAxis()));
   }
 
   /**

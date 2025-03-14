@@ -121,8 +121,8 @@ public class Elevator extends SubsystemBase {
 
   public void moveManual(double speed) {
 
-    left_motor.set(speed - .05);
-    right_motor.set(-speed + .05); // swap the negative if motors go the wrong direction
+    left_motor.set(speed - 0.05); // -.05
+    right_motor.set(-speed + 0.05); // +.05
   }
 
   public void moveToDesiredPostion(int desiredPosition) { // moves elevator to desired position
@@ -144,7 +144,7 @@ public class Elevator extends SubsystemBase {
 
     } else {
       // stops elevator
-      move(elevatorLockSpeed);
+      move(0);
     }
   }
 

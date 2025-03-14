@@ -70,7 +70,7 @@ public class Hand extends SubsystemBase {
 
   public void primeEject() {
     if (frontBeamBreakDetectsCoral() && backBeamBreakDetectsCoral()) {
-      rollerMotor.set(-.1);
+      rollerMotor.set(-.17);
     } else {
       rollerMotor.set(0);
     }
