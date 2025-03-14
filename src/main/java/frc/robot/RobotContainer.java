@@ -31,6 +31,7 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.hand.Hand;
 import frc.robot.subsystems.hook.Hook;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+// import frc.robot.commands.ScoreAndReplaceCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -97,8 +98,15 @@ public class RobotContainer {
     climb = new Climb();
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-    autoChooser.addOption("programmingtestpatplanner", new PathPlannerAuto("programmingtestauto"));
+    autoChooser =
+        new LoggedDashboardChooser<>(
+            "Auto Choices (NOTE: the side of the field that has your color of cages is the 'top' of the field)",
+            AutoBuilder.buildAutoChooser());
+    autoChooser.addOption("Taxi from middle", new PathPlannerAuto("TaxiMiddle"));
+    autoChooser.addOption("Taxi from top", new PathPlannerAuto("TaxiTop"));
+    autoChooser.addOption("Taxi from bottom", new PathPlannerAuto("TaxiBottom"));
+    autoChooser.addOption("Taxi Flexible", new PathPlannerAuto("TaxiFlexibleAuto"));
+
     autoChooser.addOption(
         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
 
@@ -182,6 +190,9 @@ public class RobotContainer {
     armController.povUp().whileTrue(elevator.moveL4Command());
 
     armController.leftBumper().whileTrue(hand.autoIntakeCommand());
+
+    // armController.leftStick().whileTrue(Commands.run(ScoreAndReplaceCommand, hand, hook,
+    // elevator));
 
     // armController.a().whileTrue(hand.primeEjectCommand());
 

@@ -29,6 +29,7 @@ public class Hook extends SubsystemBase {
 
   public void stop() { // stops the hand subsystem
     rollerMotor.set(0);
+    hookMotor.set(0);
   }
 
   public boolean isAlgaeGrabbed() {
