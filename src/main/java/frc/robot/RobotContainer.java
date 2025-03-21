@@ -23,17 +23,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.arcade.Arcade;
+import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
-import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.hand.Hand;
+import frc.robot.subsystems.hook.Hook;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+// import frc.robot.commands.ScoreAndReplaceCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,6 +48,7 @@ public class RobotContainer {
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController armController = new CommandXboxController(1);
   private final CommandGenericHID reefPad = new CommandGenericHID(2);
   private final CommandGenericHID otherPad = new CommandGenericHID(3);
 
@@ -56,65 +57,81 @@ public class RobotContainer {
 
   private final Elevator elevator;
 
+  private final Hand hand;
+
+  private final Hook hook;
+
+  private final Climb climb;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        drive =
-            new Drive(
-                new GyroIONavX(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
-        break;
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
-        break;
+    // Real robot, instantiate hardware IO implementations
+    drive =
+        new Drive(
+            new GyroIONavX(),
+            new ModuleIOSpark(0),
+            new ModuleIOSpark(1),
+            new ModuleIOSpark(2),
+            new ModuleIOSpark(3));
 
-      default:
-        // Replayed robot, disable IO implementations
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
-        break;
-    }
+    /* case SIM:
+      // Sim robot, instantiate physics sim IO implementations
+      drive =
+          new Drive(
+              new GyroIO() {},
+              new ModuleIOSim(),
+              new ModuleIOSim(),
+              new ModuleIOSim(),
+              new ModuleIOSim());
+      break;
+
+    default:
+      // Replayed robot, disable IO implementations
+      drive =
+          new Drive(
+              new GyroIO() {},
+              new ModuleIO() {},
+              new ModuleIO() {},
+              new ModuleIO() {},
+              new ModuleIO() {});
+      break; */
 
     elevator = new Elevator();
+    hand = new Hand();
+    hook = new Hook();
+    climb = new Climb();
 
     // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    autoChooser =
+        new LoggedDashboardChooser<>(
+            "Auto Choices (NOTE: the side of the field that has your color of cages is the 'top' of the field)",
+            AutoBuilder.buildAutoChooser());
+    autoChooser.addOption("Taxi from middle", new PathPlannerAuto("TaxiMiddle"));
+    autoChooser.addOption("Taxi from top", new PathPlannerAuto("TaxiTop"));
+    autoChooser.addOption("Taxi from bottom", new PathPlannerAuto("TaxiBottom"));
+    autoChooser.addOption("Taxi Flexible", new PathPlannerAuto("TaxiFlexibleAuto"));
 
-    // Set up SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption("programmingtestpatplanner", new PathPlannerAuto("programmingtestauto"));
 
+    /*  // Set up SysId routines
+        autoChooser.addOption(
+            "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+        autoChooser.addOption(
+            "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
+         autoChooser.addOption(
+            "Drive SysId (Quasistatic Forward)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Quasistatic Reverse)",
+            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        autoChooser.addOption(
+            "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        autoChooser.addOption("programmingtestpatplanner", new PathPlannerAuto("programmingtestauto"));
+    */
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -134,14 +151,7 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller
-        .y()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX() * 0,
-                () -> -controller.getRightX()));
+    controller.y().whileTrue(Commands.run(() -> drive.synchronizeEncoders(), drive));
 
     // Lock to 0° when A button is held
     controller
@@ -190,6 +200,37 @@ public class RobotContainer {
     otherPad.button(8).onTrue(arcade.l3ButtonCommand());
     otherPad.button(9).onTrue(arcade.l4ButtonCommand());
     otherPad.button(10).onTrue(arcade.bargeButtonCommand());
+
+    elevator.setDefaultCommand(
+        elevator.manualControlElevatorCommand(() -> armController.getRightY()));
+
+    hand.setDefaultCommand(hand.manualControlHandCommand(() -> armController.getLeftY()));
+
+    hook.setDefaultCommand(hook.manualControlHandCommand(() -> armController.getLeftTriggerAxis()));
+
+    armController.y().whileTrue(hook.hookIntakeCommand());
+    armController.x().whileTrue(hook.ejectAlgaeCommand());
+    armController.start().whileTrue(hook.kickAlgaeCommand());
+
+    armController.povLeft().whileTrue(elevator.moveL3Command());
+
+    armController.povDown().whileTrue(elevator.moveL2Command());
+
+    armController.povUp().whileTrue(elevator.moveL4Command());
+
+    armController.leftBumper().whileTrue(hand.autoIntakeCommand());
+
+    // armController.leftStick().whileTrue(Commands.run(ScoreAndReplaceCommand, hand, hook,
+    // elevator));
+
+    // armController.a().whileTrue(hand.primeEjectCommand());
+
+    armController.rightBumper().whileTrue(hand.ejectCommand());
+
+    armController.b().whileTrue(hand.resetWristCommand());
+
+    climb.setDefaultCommand(
+        climb.manualControlClimbCommand(() -> -controller.getRightTriggerAxis()));
   }
 
   /**

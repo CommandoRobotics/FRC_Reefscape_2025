@@ -73,10 +73,10 @@ public class Drive extends SubsystemBase {
 
   public Drive(
       GyroIO gyroIO,
-      ModuleIO flModuleIO,
-      ModuleIO frModuleIO,
-      ModuleIO blModuleIO,
-      ModuleIO brModuleIO) {
+      ModuleIOSpark flModuleIO,
+      ModuleIOSpark frModuleIO,
+      ModuleIOSpark blModuleIO,
+      ModuleIOSpark brModuleIO) {
     this.gyroIO = gyroIO;
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
@@ -211,6 +211,18 @@ public class Drive extends SubsystemBase {
     for (int i = 0; i < 4; i++) {
       modules[i].runCharacterization(output);
     }
+  }
+
+  // SYNCHRONIZES RELATIVE ENCODERS AND ABSOLUTE ENCODERS
+
+  public void synchronizeEncoders() {
+    for (int i = 0; i < 4; i++) {
+      modules[i].updateRelativeEncoders();
+    }
+  }
+
+  public Command synchronizeEncodersCommand() {
+    return run(() -> synchronizeEncoders());
   }
 
   /** Stops the drive. */

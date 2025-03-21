@@ -35,26 +35,30 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(1.667); // 2.76 -.1
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(-0.252); // -.15
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(1.437); // -.752
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.534); // -2.485
+  public static final Rotation2d frontLeftZeroRotation =
+      new Rotation2d(1.19192); // 1.663 1.661 1.706
+  public static final Rotation2d frontRightZeroRotation =
+      new Rotation2d(-0.30204288); // -0.258 -0.291 -0.194   //was -.377362
+  public static final Rotation2d backLeftZeroRotation =
+      new Rotation2d(1.793221); // 1.427 1.440 1.376
+  public static final Rotation2d backRightZeroRotation =
+      new Rotation2d(-0.055229); // 1.647 - 0.102 1.564 1.612
 
   // Device CAN IDs
   public static final int pigeonCanId = 19;
 
-  public static final int frontLeftDriveCanId = 2;
-  public static final int backLeftDriveCanId = 6;
-  public static final int frontRightDriveCanId = 4;
-  public static final int backRightDriveCanId = 8;
+  public static final int frontLeftDriveCanId = 7;
+  public static final int backLeftDriveCanId = 5;
+  public static final int frontRightDriveCanId = 1;
+  public static final int backRightDriveCanId = 3;
 
-  public static final int frontLeftTurnCanId = 3;
-  public static final int backLeftTurnCanId = 7;
-  public static final int frontRightTurnCanId = 5;
-  public static final int backRightTurnCanId = 9;
+  public static final int frontLeftTurnCanId = 6;
+  public static final int backLeftTurnCanId = 4;
+  public static final int frontRightTurnCanId = 8;
+  public static final int backRightTurnCanId = 2;
 
-  public static final int frontLeftCANCoderCanId = 11;
-  public static final int frontRightCANCoderCanId = 12;
+  public static final int frontLeftCANCoderCanId = 12;
+  public static final int frontRightCANCoderCanId = 11;
   public static final int backLeftCANCoderCanId = 13;
   public static final int backRightCANCoderCanId = 14;
 
@@ -97,10 +101,10 @@ public class DriveConstants {
 
   // CANcoder offsets from programming bot
   // TODO: Change CANcoder offsets to values for competition bot
-  public static final double frontLeftCANCoderOffset = 0; // 162.15804;
-  public static final double frontRightCANCoderOffset = 0; // 344.00376;
-  public static final double backLeftCANCoderOffset = 0; // 208.6524 + 10;
-  public static final double backRightCANCoderOffset = 0; // 278.34948;
+  public static final double frontLeftCANCoderOffset = 0; // 95.5; // 162.15804;
+  public static final double frontRightCANCoderOffset = 0; // -13.6248; // 344.00376;
+  public static final double backLeftCANCoderOffset = 0; // 81.972; // 208.6524 + 10;
+  public static final double backRightCANCoderOffset = 0; // 90.0875; // 278.34948;
 
   // Turn PID configuration
   public static final double turnKp = 2.0;
