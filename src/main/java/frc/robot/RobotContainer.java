@@ -32,6 +32,7 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.hand.Hand;
 import frc.robot.subsystems.hook.Hook;
+import frc.robot.subsystems.vision.Vision;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 // import frc.robot.commands.ScoreAndReplaceCommand;
 
@@ -45,6 +46,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Arcade arcade = new Arcade();
+  private Vision vision = new Vision();
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -240,5 +242,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public void periodic() {
+    vision.setPose(drive.getPose());
   }
 }
