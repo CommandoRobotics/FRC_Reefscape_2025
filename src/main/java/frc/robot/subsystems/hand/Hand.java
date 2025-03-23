@@ -22,7 +22,7 @@ public class Hand extends SubsystemBase {
   private SparkMaxConfig wristMotorConfig;
   private SparkClosedLoopController wristClosedLoopController;
 
-  private double rollerSpeed = 1;
+  private double rollerSpeed = .4;
 
   public Hand() {
     wristMotor = new SparkMax(51, SparkMax.MotorType.kBrushless);
@@ -60,7 +60,7 @@ public class Hand extends SubsystemBase {
 
   public void autoIntake() {
     if (frontBeamBreakDetectsCoral() && !backBeamBreakDetectsCoral()) {
-      rollerMotor.set(0.75);
+      rollerMotor.set(0.2);
     } else if (backBeamBreakDetectsCoral()) {
       rollerMotor.set(0);
     } else {
@@ -77,7 +77,7 @@ public class Hand extends SubsystemBase {
   }
 
   public void Eject() {
-    rollerMotor.set(-rollerSpeed);
+    rollerMotor.set(-.3);
   }
 
   // ********************* COMMANDS ***************************/

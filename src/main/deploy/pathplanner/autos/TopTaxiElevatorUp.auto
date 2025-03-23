@@ -11,13 +11,19 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CoralScorePath"
+                  "pathName": "TopCoralScorePath"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "PrimeCoralCommand"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "EjectAlgaeAutoCommand"
                 }
               }
             ]

@@ -14,6 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.EjectAlgaeAutoCommand;
+import frc.robot.commands.ElevatorL4AutoCommand;
+import frc.robot.commands.PrimeCoralCommand;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -96,6 +100,11 @@ public class RobotContainer {
     hand = new Hand();
     hook = new Hook();
     climb = new Climb();
+
+    NamedCommands.registerCommand(
+        "ElevatorL4AutoCommand", new ElevatorL4AutoCommand(drive, hand, hook, elevator));
+    NamedCommands.registerCommand("PrimeCoralCommand", new PrimeCoralCommand(hand));
+    NamedCommands.registerCommand("EjectAlgaeAutoCommand", new EjectAlgaeAutoCommand(hook));
 
     // Set up auto routines
     autoChooser =
@@ -202,6 +211,8 @@ public class RobotContainer {
 
     climb.setDefaultCommand(
         climb.manualControlClimbCommand(() -> -controller.getRightTriggerAxis()));
+
+    controller.start().whileTrue(climb.retractClimbCommand());
   }
 
   /**

@@ -25,10 +25,19 @@ public class Climb extends SubsystemBase {
     leftClimb.set(-power);
   }
 
+  public void retractClimb() {
+    rightClimb.set(.5);
+    leftClimb.set(-.5);
+  }
+
   // ********************* COMMANDS ***************************/
 
   public Command stopCommand() { // stops all hand subsystem motors
     return run(() -> stop());
+  }
+
+  public Command retractClimbCommand() { // stops all hand subsystem motors
+    return run(() -> retractClimb());
   }
 
   public Command manualControlClimbCommand(DoubleSupplier power) {

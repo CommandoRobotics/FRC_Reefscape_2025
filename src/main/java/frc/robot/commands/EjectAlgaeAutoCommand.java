@@ -6,26 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.hand.Hand;
 import frc.robot.subsystems.hook.Hook;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ElevatorL4AutoCommand extends SequentialCommandGroup {
+public class EjectAlgaeAutoCommand extends SequentialCommandGroup {
   /** Creates a new ScoreAndReplaceCommand. */
-  public ElevatorL4AutoCommand(
-      Drive driveSubsystem, Hand handSubsystem, Hook hookSubsystem, Elevator elevatorSubsystem) {
+  public EjectAlgaeAutoCommand(Hook hookSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> elevatorSubsystem.moveToDesiredPostion(3), elevatorSubsystem)
+        new InstantCommand(() -> hookSubsystem.autoIntake(), hookSubsystem)
             .repeatedly()
-            .withTimeout(5),
-        new InstantCommand(() -> elevatorSubsystem.stop(), elevatorSubsystem)
-            .repeatedly()
-            .withTimeout(10));
+            .withTimeout(6));
   }
 }
