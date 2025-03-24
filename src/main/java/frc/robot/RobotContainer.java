@@ -27,6 +27,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.EjectAlgaeAutoCommand;
 import frc.robot.commands.ElevatorL4AutoCommand;
 import frc.robot.commands.PrimeCoralCommand;
+import frc.robot.commands.WaitForCoralCommand;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -105,6 +106,7 @@ public class RobotContainer {
         "ElevatorL4AutoCommand", new ElevatorL4AutoCommand(drive, hand, hook, elevator));
     NamedCommands.registerCommand("PrimeCoralCommand", new PrimeCoralCommand(hand));
     NamedCommands.registerCommand("EjectAlgaeAutoCommand", new EjectAlgaeAutoCommand(hook));
+    NamedCommands.registerCommand("WaitForCoralCommand", new WaitForCoralCommand(hand));
 
     // Set up auto routines
     autoChooser =
