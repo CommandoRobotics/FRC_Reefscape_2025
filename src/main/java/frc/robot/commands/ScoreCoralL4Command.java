@@ -8,15 +8,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.hand.Hand;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class WaitForCoralCommand extends Command {
+public class ScoreCoralL4Command extends Command {
 
   Hand hand;
   boolean isFinished = false;
+  double accumulatedPower;
+  double accumulatedTime;
 
   /** Creates a new WaitForCoralCommand. */
-  public WaitForCoralCommand(Hand hand) {
+  public ScoreCoralL4Command(Hand hand) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.hand = hand;
+    accumulatedPower = 0;
+    accumulatedTime = 0;
   }
 
   // Called when the command is initially scheduled.
@@ -26,16 +30,28 @@ public class WaitForCoralCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (hand.frontBeamBreakDetectsCoral() && hand.backBeamBreakDetectsCoral()) {
-      isFinished = true;
+    accumulatedPower += .05;
+    accumulatedTime += .02;
+
+    if (accumulatedTime <= 1) {
+      if (hand.frontBeamBreakDetectsCoral()) {
+        isFinished = false;
+        hand.manualHand(-1 * accumulatedPower);
+
+      } else {
+        isFinished = true;
+      }
     } else {
-      hand.autoIntake();
+      hand.Eject();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    accumulatedPower = 0;
+    accumulatedTime = 0;
+  }
 
   // Returns true when the command should end.
   @Override

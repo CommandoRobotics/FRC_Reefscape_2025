@@ -54,7 +54,6 @@ public class Hand extends SubsystemBase {
 
   public void manualHand(double power) {
     wristMotor.set(power);
-
     rollerMotor.set(0);
   }
 
@@ -104,6 +103,14 @@ public class Hand extends SubsystemBase {
 
   public Command ejectCommand() {
     return run(() -> Eject());
+  }
+
+  public Command wristPositive() {
+    return run(() -> manualHand(1));
+  }
+
+  public Command wristNegative() {
+    return run(() -> manualHand(-1));
   }
 
   // ********************* END OF COMMANDS ***************************/

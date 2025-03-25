@@ -25,17 +25,14 @@ public class ScoreAndReplaceCommand extends SequentialCommandGroup {
         new InstantCommand(() -> elevatorSubsystem.moveToDesiredPostion(6), elevatorSubsystem)
             .repeatedly()
             .withTimeout(4),
-        new InstantCommand(() -> handSubsystem.manualHand(1), handSubsystem)
-            .repeatedly()
-            .withTimeout(1.5),
-        new ParallelCommandGroup(
-                new InstantCommand(() -> handSubsystem.Eject(), handSubsystem),
-                new InstantCommand(() -> hookSubsystem.removeAlgaeKick()))
+        new InstantCommand(() -> handSubsystem.manualHand(-1), handSubsystem).withTimeout(1.5),
+        new ParallelCommandGroup(new InstantCommand(() -> handSubsystem.Eject(), handSubsystem))
+            //  new InstantCommand(() -> hookSubsystem.removeAlgaeKick()))
             .repeatedly()
             .withTimeout(2),
         new ParallelCommandGroup(
                 new InstantCommand(() -> handSubsystem.stop(), handSubsystem),
-                new InstantCommand(() -> hookSubsystem.stop(), hookSubsystem),
+                // new InstantCommand(() -> hookSubsystem.stop(), hookSubsystem),
                 new InstantCommand(() -> elevatorSubsystem.stop(), elevatorSubsystem))
             .repeatedly()
             .withTimeout(10));

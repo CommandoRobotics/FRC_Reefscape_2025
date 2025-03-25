@@ -27,6 +27,8 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.EjectAlgaeAutoCommand;
 import frc.robot.commands.ElevatorL4AutoCommand;
 import frc.robot.commands.PrimeCoralCommand;
+import frc.robot.commands.ScoreAndReplaceCommand;
+import frc.robot.commands.ScoreCoralL4Command;
 import frc.robot.commands.WaitForCoralCommand;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
@@ -107,6 +109,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("PrimeCoralCommand", new PrimeCoralCommand(hand));
     NamedCommands.registerCommand("EjectAlgaeAutoCommand", new EjectAlgaeAutoCommand(hook));
     NamedCommands.registerCommand("WaitForCoralCommand", new WaitForCoralCommand(hand));
+    NamedCommands.registerCommand(
+        "ScoreAndReplaceCommand", new ScoreAndReplaceCommand(drive, hand, hook, elevator));
 
     // Set up auto routines
     autoChooser =
@@ -120,6 +124,7 @@ public class RobotContainer {
 
     autoChooser.addOption(
         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
+    autoChooser.addOption("debug coral score", new ScoreCoralL4Command(hand));
 
     /*  // Set up SysId routines
         autoChooser.addOption(
@@ -153,8 +158,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
+            () -> controller.getLeftY(),
+            () -> controller.getLeftX(),
             () -> -controller.getRightX()));
 
     controller.y().whileTrue(Commands.run(() -> drive.synchronizeEncoders(), drive));
@@ -192,7 +197,8 @@ public class RobotContainer {
 
     armController.y().whileTrue(hook.hookIntakeCommand());
     armController.x().whileTrue(hook.ejectAlgaeCommand());
-    armController.start().whileTrue(hook.kickAlgaeCommand());
+    armController.start().whileTrue(new ScoreCoralL4Command(hand));
+    armController.back().whileTrue(hand.wristNegative());
 
     armController.povLeft().whileTrue(elevator.moveL3Command());
 
