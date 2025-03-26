@@ -25,7 +25,10 @@ public class ScoreCoralL4Command extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    accumulatedPower = 0;
+    accumulatedTime = 0;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -34,15 +37,15 @@ public class ScoreCoralL4Command extends Command {
     accumulatedTime += .02;
 
     if (accumulatedTime <= 1) {
-      if (hand.frontBeamBreakDetectsCoral()) {
-        isFinished = false;
-        hand.manualHand(-1 * accumulatedPower);
 
-      } else {
-        isFinished = true;
-      }
-    } else {
+      isFinished = false;
+      hand.manualHand(-1 * accumulatedPower);
+
+    } else if (accumulatedTime > 1 && accumulatedTime <= 2) {
       hand.Eject();
+      isFinished = false;
+    } else {
+      isFinished = true;
     }
   }
 

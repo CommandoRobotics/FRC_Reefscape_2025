@@ -26,7 +26,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.EjectAlgaeAutoCommand;
 import frc.robot.commands.ElevatorL4AutoCommand;
+import frc.robot.commands.GrabCoralThenScore;
 import frc.robot.commands.PrimeCoralCommand;
+import frc.robot.commands.RemoveAlgaeCommand;
 import frc.robot.commands.ScoreAndReplaceCommand;
 import frc.robot.commands.ScoreCoralL4Command;
 import frc.robot.commands.WaitForCoralCommand;
@@ -124,7 +126,10 @@ public class RobotContainer {
 
     autoChooser.addOption(
         "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption("debug coral score", new ScoreCoralL4Command(hand));
+    autoChooser.addOption(
+        "debug coral elevator score", new ScoreAndReplaceCommand(drive, hand, hook, elevator));
+    autoChooser.addOption(
+        "debug wait for coral command", new GrabCoralThenScore(drive, hand, hook, elevator));
 
     /*  // Set up SysId routines
         autoChooser.addOption(
@@ -198,7 +203,7 @@ public class RobotContainer {
     armController.y().whileTrue(hook.hookIntakeCommand());
     armController.x().whileTrue(hook.ejectAlgaeCommand());
     armController.start().whileTrue(new ScoreCoralL4Command(hand));
-    armController.back().whileTrue(hand.wristNegative());
+    armController.back().whileTrue(new RemoveAlgaeCommand(hook));
 
     armController.povLeft().whileTrue(elevator.moveL3Command());
 

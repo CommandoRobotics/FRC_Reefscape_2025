@@ -54,6 +54,12 @@ public class Hook extends SubsystemBase {
     rollerMotor.set(0);
   }
 
+  public void manualHook(double power, double rollerPower) {
+    hookMotor.set(power);
+
+    rollerMotor.set(rollerPower);
+  }
+
   public void autoIntake() {
 
     if (isAlgaeGrabbed() == true) {

@@ -68,7 +68,7 @@ public class Elevator extends SubsystemBase {
   private final Color L2Color = red; // 0 (bottom of robot)
 
   private final double elevatorUpSpeed = -0.3;
-  private final double elevatorUpSlowSpeed = -0.15;
+  private final double elevatorUpSlowSpeed = -0.2; // was -.015
 
   private final double elevatorDownSpeed = 0.15;
   private final double elevatorDownSlowSpeed = 0.075;

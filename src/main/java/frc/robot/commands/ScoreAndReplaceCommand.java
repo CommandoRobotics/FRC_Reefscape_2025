@@ -22,18 +22,16 @@ public class ScoreAndReplaceCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> elevatorSubsystem.moveToDesiredPostion(6), elevatorSubsystem)
-            .repeatedly()
-            .withTimeout(4),
-        new InstantCommand(() -> handSubsystem.manualHand(-1), handSubsystem).withTimeout(1.5),
-        new ParallelCommandGroup(new InstantCommand(() -> handSubsystem.Eject(), handSubsystem))
-            //  new InstantCommand(() -> hookSubsystem.removeAlgaeKick()))
+        new InstantCommand(() -> elevatorSubsystem.moveToDesiredPostion(7), elevatorSubsystem)
             .repeatedly()
             .withTimeout(2),
         new ParallelCommandGroup(
+                new ScoreCoralL4Command(handSubsystem), new RemoveAlgaeCommand(hookSubsystem))
+            .withTimeout(4),
+        new ParallelCommandGroup(
                 new InstantCommand(() -> handSubsystem.stop(), handSubsystem),
-                // new InstantCommand(() -> hookSubsystem.stop(), hookSubsystem),
-                new InstantCommand(() -> elevatorSubsystem.stop(), elevatorSubsystem))
+                new InstantCommand(() -> elevatorSubsystem.stop(), elevatorSubsystem),
+                new InstantCommand(() -> hookSubsystem.stop(), hookSubsystem))
             .repeatedly()
             .withTimeout(10));
   }
