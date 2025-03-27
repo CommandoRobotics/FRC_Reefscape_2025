@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.arcade.Arcade;
+import frc.robot.subsystems.autopilot.Autopilot;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -47,6 +48,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Arcade arcade = new Arcade();
   private Vision vision = new Vision();
+  private Autopilot autopilot = new Autopilot();
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -246,5 +248,9 @@ public class RobotContainer {
 
   public void periodic() {
     vision.setPose(drive.getPose());
+    if (Robot.isReal()) {
+      autopilot.setCurrentPose(drive.getPose());
+    }
+    autopilot.setElementPose(arcade.getTargetPose());
   }
 }
