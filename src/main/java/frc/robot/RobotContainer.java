@@ -213,10 +213,7 @@ public class RobotContainer {
 
     armController.leftBumper().whileTrue(hand.autoIntakeCommand());
 
-    // armController.leftStick().whileTrue(Commands.run(ScoreAndReplaceCommand, hand, hook,
-    // elevator));
-
-    // armController.a().whileTrue(hand.primeEjectCommand());
+    armController.a().whileTrue(hand.primeEjectCommand());
 
     armController.rightBumper().whileTrue(hand.ejectCommand());
 
@@ -226,6 +223,8 @@ public class RobotContainer {
         climb.manualControlClimbCommand(() -> -controller.getRightTriggerAxis()));
 
     controller.start().whileTrue(climb.retractClimbCommand());
+
+    armController.povRight().whileTrue(hand.autoIntakeFromBackCommand());
   }
 
   /**

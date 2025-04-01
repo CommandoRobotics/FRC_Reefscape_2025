@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.DoubleSupplier;
 
 enum rainbowPositions { // MAKE SURE POSITIONS ARE LISTED FROM LOWEST TO HIGHEST
+  belowL2,
   L2,
   aboveL2,
   belowL3,
@@ -51,21 +52,24 @@ public class Elevator extends SubsystemBase {
 
   private final Color pink = new Color(0.428, 0.3496, 0.2226); // pink NEW COLOR
 
-  private final Color lightBrown = new Color(0.375, 0.4448, 0.181); // light brown
+  // private final Color lightBrown = new Color(0.375, 0.4448, 0.181); // light brown
+  private final Color lightBrown = new Color(0.376, 0.446, 0.177); // light brown
+
   private final Color darkBrown = new Color(0.307, 0.473, 0.221); // dark brown
   private final Color grey = new Color(0.251, 0.478, 0.2712); // grey
   private final Color black = new Color(0.232, 0.477, 0.290); // black
   private final Color white = new Color(0.253, 0.48, 0.265381); // white
 
-  private final Color belowBargeColor = purple; // 8
-  private final Color aboveL4Color = lightBlue; // 7
-  private final Color L4Color = blue; // 6
-  private final Color belowL4Color = lightGreen; // 5
-  private final Color aboveL3Color = green; // 4
-  private final Color L3Color = darkYellow; // 3
-  private final Color belowL3Color = lightOrange; // 2
-  private final Color aboveL2Color = orange; // 1
-  private final Color L2Color = red; // 0 (bottom of robot)
+  // private final Color belowBargeColor = purple; // 8
+  // private final Color aboveL4Color = lightBlue; // 7
+  private final Color L4Color = purple; // 7
+  private final Color belowL4Color = blue; // 6
+  private final Color aboveL3Color = green; // 5
+  private final Color L3Color = darkYellow; // 4
+  private final Color belowL3Color = orange; // 3
+  private final Color aboveL2Color = pink; // 2
+  private final Color L2Color = red; // 1
+  private final Color belowL2Color = lightBrown; // 0 (bottom of robot)
 
   private final double elevatorUpSpeed = -0.3;
   private final double elevatorUpSlowSpeed = -0.2; // was -.015
@@ -82,8 +86,8 @@ public class Elevator extends SubsystemBase {
 
     // add colors to color matcher
 
-    colorMatcher.addColorMatch(belowBargeColor);
-    colorMatcher.addColorMatch(aboveL4Color);
+    // colorMatcher.addColorMatch(belowBargeColor);
+    // colorMatcher.addColorMatch(aboveL4Color);
     colorMatcher.addColorMatch(L4Color);
     colorMatcher.addColorMatch(belowL4Color);
     colorMatcher.addColorMatch(aboveL3Color);
@@ -95,12 +99,13 @@ public class Elevator extends SubsystemBase {
     colorMatcher.addColorMatch(red);
     colorMatcher.addColorMatch(orange);
     colorMatcher.addColorMatch(darkYellow);
-    colorMatcher.addColorMatch(lightGreen);
+    // colorMatcher.addColorMatch(lightGreen);
     colorMatcher.addColorMatch(green);
     colorMatcher.addColorMatch(blue);
     colorMatcher.addColorMatch(purple);
-    colorMatcher.addColorMatch(lightOrange);
-    colorMatcher.addColorMatch(lightBlue);
+    // colorMatcher.addColorMatch(lightOrange);
+    // colorMatcher.addColorMatch(lightBlue);
+    colorMatcher.addColorMatch(lightBrown);
   }
 
   public void stop() {
@@ -153,11 +158,7 @@ public class Elevator extends SubsystemBase {
     Color detectedColor = rainbowEncoder.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
-    if (match.color == belowBargeColor) {
-      colorIndex = rainbowPositions.belowBarge.ordinal();
-    } else if (match.color == aboveL4Color) {
-      colorIndex = rainbowPositions.aboveL4.ordinal();
-    } else if (match.color == L4Color) {
+    if (match.color == L4Color) {
       colorIndex = rainbowPositions.L4.ordinal();
     } else if (match.color == belowL4Color) {
       colorIndex = rainbowPositions.belowL4.ordinal();
@@ -171,6 +172,8 @@ public class Elevator extends SubsystemBase {
       colorIndex = rainbowPositions.aboveL2.ordinal();
     } else if (match.color == L2Color) {
       colorIndex = rainbowPositions.L2.ordinal();
+    } else if (match.color == belowL2Color) {
+      colorIndex = rainbowPositions.belowL2.ordinal();
     } else {
       colorIndex = rainbowPositions.unknown.ordinal();
     }
@@ -230,11 +233,7 @@ public class Elevator extends SubsystemBase {
     Color detectedColor = rainbowEncoder.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
-    if (match.color == belowBargeColor) {
-      seenColor = "below barge";
-    } else if (match.color == aboveL4Color) {
-      seenColor = "above L4";
-    } else if (match.color == L4Color) {
+    if (match.color == L4Color) {
       seenColor = "at L4";
     } else if (match.color == belowL4Color) {
       seenColor = "below L4";

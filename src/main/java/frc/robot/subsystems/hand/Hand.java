@@ -67,6 +67,16 @@ public class Hand extends SubsystemBase {
     }
   }
 
+  public void autoIntakeFromBack() {
+    if (!frontBeamBreakDetectsCoral() && backBeamBreakDetectsCoral()) {
+      rollerMotor.set(-0.2);
+    } else if (frontBeamBreakDetectsCoral()) {
+      rollerMotor.set(0);
+    } else {
+      rollerMotor.set(-rollerSpeed);
+    }
+  }
+
   public void primeEject() {
     if (frontBeamBreakDetectsCoral() && backBeamBreakDetectsCoral()) {
       rollerMotor.set(-.17);
@@ -95,6 +105,10 @@ public class Hand extends SubsystemBase {
 
   public Command autoIntakeCommand() {
     return run(() -> autoIntake());
+  }
+
+  public Command autoIntakeFromBackCommand() {
+    return run(() -> autoIntakeFromBack());
   }
 
   public Command primeEjectCommand() {

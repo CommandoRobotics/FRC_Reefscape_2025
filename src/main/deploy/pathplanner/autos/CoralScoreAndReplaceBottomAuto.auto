@@ -9,21 +9,15 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "BottomCoralScorePath"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "PrimeCoralCommand"
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "EjectAlgaeAutoCommand"
+                  "pathName": "BottomCoralScorePath"
                 }
               }
             ]
@@ -32,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ElevatorL4AutoCommand"
+            "name": "ScoreAndReplaceCommand"
           }
         }
       ]
